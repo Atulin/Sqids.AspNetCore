@@ -23,7 +23,10 @@
 
     <ItemGroup>
         <EmbeddedResource Include="reference_vectors.json"/>
-        <None Update="coverage.settings.xml" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="coverage.settings.xml" />
     </ItemGroup>
 
 </Project>
