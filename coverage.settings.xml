@@ -4,6 +4,7 @@
         <Sources>
             <Exclude>
                 <Source>.*\.g\.cs$</Source>
+				<Source>.*\.generated\.cs$</Source>
             </Exclude>
         </Sources>
     </CodeCoverage>

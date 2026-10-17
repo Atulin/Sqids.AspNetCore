@@ -1,39 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RootNamespace>Sqids.AspNetCore</RootNamespace>
-      
-    <PackageId>Sqids.AspNetCore</PackageId>
-      <PackageVersion>1.0.0</PackageVersion>
-      <Title>Sqids.AspNetCore</Title>
-      <Description>SQID implementation made specifically for ASP.NET Core usage</Description>
-      <Authors>Atulin</Authors>
-      <PackageTags>squd;asp;asp-core;asp.net</PackageTags>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<RootNamespace>Sqids.AspNetCore</RootNamespace>
 
-      <PackageProjectUrl>https://github.com/Atulin/Sqids.AspNetCore</PackageProjectUrl>
-      <RepositoryUrl>https://github.com/Atulin/Sqids.AspNetCore</RepositoryUrl>
-      <PublishRepositoryUrl>true</PublishRepositoryUrl>
-      <RepositoryType>git</RepositoryType>
+		<PackageId>Atulin.Sqids.AspNetCore</PackageId>
+		<PackageVersion>1.0.0</PackageVersion>
+		<Title>Sqids.AspNetCore</Title>
+		<Description>SQID implementation made specifically for ASP.NET Core usage</Description>
+		<Authors>Atulin</Authors>
+		<PackageTags>squd;asp;asp-core;asp.net</PackageTags>
 
-      <PackageReadmeFile>README.md</PackageReadmeFile>
-      <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
+		<PackageProjectUrl>https://github.com/Atulin/Sqids.AspNetCore</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Atulin/Sqids.AspNetCore</RepositoryUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 
-    <ItemGroup>
-        <None Include="..\README.md" Pack="true" PackagePath="\"/>
-    </ItemGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13"/>
+	</ItemGroup>
 
 </Project>
