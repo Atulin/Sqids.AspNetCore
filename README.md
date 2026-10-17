@@ -7,10 +7,27 @@ A strongly-typed `Sqid` for ASP.NET Core, built on the [Sqids](https://sqids.org
 
 This library provides first-class integration with ASP.NET Core: route/query/form/model binding for Minimal APIs, MVC, and Razor Pages; JSON serialization/deserialization via a built-in `JsonConverter`; and OpenAPI schema generation. IDs are validated to be in canonical form, matching the behavior of other official Sqids implementations.
 
+## Differences from [Sqids.NET](https://github.com/sqids/sqids-dotnet)
+
+This library is not a fork of the core `Sqids` library; it builds a higher-level `Sqid` type and ASP.NET Core integration on top of the same spec. Key differences:
+
+| Aspect | Sqids.AspNetCore | sqids-dotnet (core) |
+|---|---|---|
+| Primary focus | ASP.NET Core integration (binding, JSON, OpenAPI, route constraints) | Generic, framework-agnostic Sqids encoder/decoder |
+| Type model | Strongly-typed `Sqid` `readonly struct` (value type) wrapping a single `long` value | `SqidsEncoder<T>` / `SqidsEncoder` for encoding/decoding numeric sequences |
+| API surface | Focused on binding/parsing as a single ID value (`Parse`, `TryParse`, `From`, `Value`) | Focused on encoding/decoding numbers (`Encode`, `Decode`) with support for multiple numbers |
+| Integration | Automatic model binding, `TypeConverter`, `{id:sqid}` route constraint, `JsonConverter`, OpenAPI schema (`AddSqidSchema`) | No ASP.NET Core-specific binding/JSON/OpenAPI helpers |
+| Numeric types | Single integer (`long`) for the `Sqid` value | Generic math / overloads for many integral types (int, long, ulong, etc.) and multiple numbers |
+| Canonicality enforcement | Always validates canonical form on parse (re-encodes and compares); explicit parse errors | Canonicality is a user concern in general use (you must re-encode and compare if needed) |
+| Usage pattern | Treat `Sqid` as a first-class domain type in web models/controllers | Treat encoder as a service to transform numbers<->strings |
+
+If you only need core encoding/decoding (not ASP.NET Core binding/JSON/OpenAPI), use [sqids-dotnet](https://github.com/sqids/sqids-dotnet). If you're building an ASP.NET Core app and want a `Sqid` value type that "just works" with model binding, JSON, and OpenAPI, this library is a better fit.
+
 ## References
 
 - [Sqids.org](https://sqids.org) – original Sqids library and documentation
 - [Sqids Specification](https://github.com/sqids/sqids-spec) – the canonical Sqids specification this implementation follows
+- [sqids-dotnet](https://github.com/sqids/sqids-dotnet) – core .NET implementation of Sqids
 - [Sqids GitHub Organization](https://github.com/sqids) – official implementations across languages
 
 ## Installation
@@ -43,6 +60,7 @@ app.MapOpenApi();
 app.Run();
 ```
 
+> [!WARNING]
 > `AddSqids()` must be called before the first `Sqid` is used (the library uses a process-wide default codec). Calling it again after first use throws.
 
 ## Usage
@@ -169,5 +187,3 @@ dotnet test
 ## License
 
 [MIT License](LICENSE)
-
-
