@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Sqids;
+namespace Sqids.AspNetCore;
 
 /// <summary>
 /// MVC / Razor Pages binder for <see cref="Sqid"/> and <c>Sqid?</c> from route, query, form and header values.

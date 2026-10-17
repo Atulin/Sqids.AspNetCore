@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Sqids;
+namespace Sqids.AspNetCore;
 
 /// <summary>
 /// Reads and writes <see cref="Sqid"/> as a JSON string (also as a dictionary key). Zero-copy on the happy path:

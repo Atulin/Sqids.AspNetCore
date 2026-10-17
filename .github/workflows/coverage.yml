@@ -1,0 +1,40 @@
+﻿name: Tests & Coverage
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  test:
+    name: Run tests and report coverage
+    runs-on: ubuntu-latest
+    
+    env:
+      DOTNET_TEST_USE_MODERN_OUTPUT: true
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.x'
+
+      - name: Run tests with coverage
+        run: |
+          dotnet test -c Release -- \
+            --coverage \
+            --coverage-output coverage.cobertura.xml \
+            --coverage-output-format cobertura
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          file: TestResults/coverage.cobertura.xml
+          format: cobertura

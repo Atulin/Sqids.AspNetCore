@@ -5,7 +5,7 @@ using System.Text;
 
 [module: SkipLocalsInit]
 
-namespace Sqids;
+namespace Sqids.AspNetCore;
 
 /// <summary>Why a textual <see cref="Sqid"/> was rejected.</summary>
 public enum SqidParseError : byte

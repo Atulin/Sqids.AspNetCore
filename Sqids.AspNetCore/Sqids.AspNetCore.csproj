@@ -6,9 +6,27 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RootNamespace>Sqids</RootNamespace>
+    <RootNamespace>Sqids.AspNetCore</RootNamespace>
+      
     <PackageId>Sqids.AspNetCore</PackageId>
+      <PackageVersion>1.0.0</PackageVersion>
+      <Title>Sqids.AspNetCore</Title>
+      <Description>SQID implementation made specifically for ASP.NET Core usage</Description>
+      <Authors>Atulin</Authors>
+      <PackageTags>squd;asp;asp-core;asp.net</PackageTags>
+
+      <PackageProjectUrl>https://github.com/Atulin/Sqids.AspNetCore</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/Atulin/Sqids.AspNetCore</RepositoryUrl>
+      <PublishRepositoryUrl>true</PublishRepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+
+      <PackageReadmeFile>README.md</PackageReadmeFile>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

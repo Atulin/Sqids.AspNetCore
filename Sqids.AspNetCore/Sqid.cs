@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Text.Json.Serialization;
 
-namespace Sqids;
+namespace Sqids.AspNetCore;
 
 /// <summary>
 /// A non-negative 64-bit identifier that is written as a Sqids string (e.g. <c>"Uk"</c>) everywhere it is formatted,

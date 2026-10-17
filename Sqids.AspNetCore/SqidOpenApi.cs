@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
-namespace Sqids;
+namespace Sqids.AspNetCore;
 
 public static class SqidOpenApiExtensions
 {

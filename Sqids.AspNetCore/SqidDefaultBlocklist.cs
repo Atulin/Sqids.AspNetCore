@@ -1,4 +1,4 @@
-namespace Sqids;
+namespace Sqids.AspNetCore;
 
 /// <summary>The official Sqids default blocklist (sqids-spec, <c>src/blocklist.json</c>).</summary>
 internal static class SqidDefaultBlocklist
