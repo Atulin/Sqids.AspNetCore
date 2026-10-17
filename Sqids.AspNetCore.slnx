@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Sqids.AspNetCore.Tests/Sqids.AspNetCore.Tests.csproj" />
   <Project Path="Sqids.AspNetCore/Sqids.AspNetCore.csproj" />
 </Solution>
