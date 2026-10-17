@@ -1,0 +1,18 @@
+{
+	"codeCoverage": {
+		"Configuration": {
+			"CodeCoverage": {
+				"Attributes": {
+					"Exclude": [
+						"^System\\.CodeDom\\.Compiler\\.GeneratedCodeAttribute$"
+					]
+				},
+				"Sources": {
+					"Exclude": [
+						".*[\\\\/]obj[\\\\/].*"
+					]
+				}
+			}
+		}
+	}
+}

@@ -2,6 +2,9 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/Atulin/Sqids.AspNetCore/badge.svg?branch=master)](https://coveralls.io/github/Atulin/Sqids.AspNetCore?branch=master)
 [![Tests & Coverage](https://github.com/Atulin/Sqids.AspNetCore/actions/workflows/coverage.yml/badge.svg)](https://github.com/Atulin/Sqids.AspNetCore/actions/workflows/coverage.yml)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Atulin.Sqids.AspNetCore) ![NuGet Version](https://img.shields.io/nuget/v/Atulin.Sqids.AspNetCore)
+](https://www.nuget.org/packages/Atulin.Sqids.AspNetCore/)
+[![GitHub License](https://img.shields.io/github/license/Atulin/Sqids.AspNetCore)](LICENSE)
 
 A strongly-typed `Sqid` for ASP.NET Core, built on the [Sqids](https://sqids.org) ID generation scheme. It encodes non-negative integers into short, URL-safe, non-sequential IDs and decodes them back.
 
