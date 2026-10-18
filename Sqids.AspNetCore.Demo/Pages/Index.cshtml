@@ -1,0 +1,60 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Sqids.AspNetCore Demo";
+}
+
+<div class="container mt-4">
+    <h1>Sqids.AspNetCore Demo</h1>
+    <p class="lead">Demonstrating the use of Sqids.AspNetCore library</p>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>API Endpoints</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><strong>GET /</strong> - This page (Razor Pages)</li>
+                        <li><strong>GET /encode/{n:long}</strong> - Encode a number to Sqid (injected <code>SqidCodec</code>)</li>
+                        <li><strong>GET /decode/{id}</strong> - Decode a Sqid to number</li>
+                        <li><strong>POST /echo</strong> - JSON round-trip of a <code>Sqid</code> property (built-in <code>JsonConverter</code>)</li>
+                        <li><strong>GET /users/mini/{id:sqid}</strong> - Minimal API with the <code>{id:sqid}</code> route constraint</li>
+                        <li><strong>GET /api/users</strong> - MVC: list users</li>
+                        <li><strong>GET /api/users/{id:sqid}</strong> - MVC: get user by Sqid (route constraint returns 404 for invalid IDs)</li>
+                        <li><strong>GET /api/users/by-sqid?id={sqid}</strong> - MVC: query binding of a nullable <code>Sqid?</code></li>
+                        <li><strong>POST /api/users</strong> - MVC: create user (JSON body)</li>
+                        <li><strong>GET /Details/{id:sqid}</strong> - Razor Page with the <code>{id:sqid}</code> route constraint</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Try it out</h5>
+                </div>
+                <div class="card-body">
+                    <a href="/scalar/v1" class="btn btn-primary btn-block mb-3">Open API Documentation (Scalar)</a>
+                    <a href="/openapi/v1.json" class="btn btn-secondary btn-block">OpenAPI JSON</a>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5>Razor Pages with <code>{id:sqid}</code> route constraint</h5>
+                </div>
+                <div class="card-body">
+                    <p>Click a user to open <code>/Details/{id:sqid}</code>. IDs that are not canonical Sqids 404.</p>
+                    <ul class="list-unstyled">
+                        @foreach (var (sqid, name) in Model.UserLinks)
+                        {
+                            <li><a asp-page="/Details" asp-route-id="@sqid">@name</a> → <code>@sqid</code></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

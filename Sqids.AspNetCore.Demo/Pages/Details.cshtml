@@ -1,0 +1,29 @@
+@page "{id:sqid}"
+@model DetailsModel
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-4">
+    <h1>User Details</h1>
+    <div class="card mt-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Sqid (Route)</dt>
+                <dd class="col-sm-9">@Model.Id.ToString()</dd>
+
+                <dt class="col-sm-3">Numeric Value</dt>
+                <dd class="col-sm-9">@Model.Id.Value</dd>
+
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="mt-3">
+        <a asp-page="/Index" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
