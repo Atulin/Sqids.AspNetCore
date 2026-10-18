@@ -170,6 +170,48 @@ builder.Services.AddSqids(o => {
 });
 ```
 
+## Synthetic Benchmark
+
+* `SqidsNet` -> `Sqids.NET` library
+* `SquidCodec` -> this library, raw codec performance
+
+<!-- description start -->
+```
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26300.9711)
+AMD Ryzen 9 9900X 4.40GHz, 1 CPU, 24 logical and 12 physical cores
+.NET SDK 11.0.100-rc.2.26504.105
+  [Host]     : .NET 10.0.13 (10.0.13, 10.0.1326.50504), X64 RyuJIT x86-64-v4
+  DefaultJob : .NET 10.0.13 (10.0.13, 10.0.1326.50504), X64 RyuJIT x86-64-v4
+```
+<!-- description end -->
+<!-- table start -->
+| Method    | Value               | MinLength | Mean          | Error       | StdDev        | Median        | Ratio | RatioSD | Rank | Gen0   | Allocated | Alloc Ratio |
+|---------- |-------------------- |---------- |--------------:|------------:|--------------:|--------------:|------:|--------:|-----:|-------:|----------:|------------:|
+| SqidsNet  | 1                   | 0         |    224.248 ns |  13.9751 ns |    41.2059 ns |    205.380 ns |  1.03 |    0.25 |    2 | 0.0157 |     264 B |        1.00 |
+| SqidCodec | 1                   | 0         |      7.430 ns |   0.1779 ns |     0.3753 ns |      7.372 ns |  0.03 |    0.01 |    1 | 0.0019 |      32 B |        0.12 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 1                   | 8         |  9,370.275 ns | 158.0572 ns |   264.0782 ns |  9,366.051 ns | 1.001 |    0.04 |    2 | 0.9155 |   15472 B |       1.000 |
+| SqidCodec | 1                   | 8         |     20.401 ns |   0.4332 ns |     0.7811 ns |     20.163 ns | 0.002 |    0.00 |    1 | 0.0024 |      40 B |       0.003 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 123456              | 0         |  1,480.146 ns |  29.1828 ns |    34.7400 ns |  1,474.041 ns |  1.00 |    0.03 |    2 | 0.1717 |    2896 B |        1.00 |
+| SqidCodec | 123456              | 0         |     17.770 ns |   1.0463 ns |     3.0850 ns |     16.399 ns |  0.01 |    0.00 |    1 | 0.0019 |      32 B |        0.01 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 123456              | 8         | 11,904.254 ns | 486.4056 ns | 1,434.1779 ns | 12,274.207 ns | 1.017 |    0.19 |    2 | 0.9155 |   15480 B |       1.000 |
+| SqidCodec | 123456              | 8         |     25.288 ns |   1.3742 ns |     4.0518 ns |     22.775 ns | 0.002 |    0.00 |    1 | 0.0024 |      40 B |       0.003 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 4294967296          | 0         |  5,539.387 ns |  81.7319 ns |   195.8245 ns |  5,513.649 ns | 1.001 |    0.05 |    2 | 0.6943 |   11680 B |       1.000 |
+| SqidCodec | 4294967296          | 0         |     26.707 ns |   0.5267 ns |     0.4669 ns |     26.706 ns | 0.005 |    0.00 |    1 | 0.0024 |      40 B |       0.003 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 4294967296          | 8         | 10,108.399 ns | 631.6650 ns | 1,862.4786 ns |  8,845.481 ns | 1.032 |    0.26 |    2 | 0.9155 |   15488 B |       1.000 |
+| SqidCodec | 4294967296          | 8         |     28.775 ns |   0.5986 ns |     0.5307 ns |     28.825 ns | 0.003 |    0.00 |    1 | 0.0024 |      40 B |       0.003 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 9223372036854775807 | 0         | 10,934.390 ns | 201.8682 ns |   269.4882 ns | 10,936.725 ns | 1.001 |    0.03 |    2 | 1.0681 |   18096 B |       1.000 |
+| SqidCodec | 9223372036854775807 | 0         |     47.442 ns |   0.8319 ns |     0.7374 ns |     47.453 ns | 0.004 |    0.00 |    1 | 0.0029 |      48 B |       0.003 |
+|           |                     |           |               |             |               |               |       |         |      |        |           |             |
+| SqidsNet  | 9223372036854775807 | 8         | 11,047.489 ns | 220.4561 ns |   206.2148 ns | 11,110.414 ns | 1.000 |    0.03 |    2 | 1.0681 |   18096 B |       1.000 |
+| SqidCodec | 9223372036854775807 | 8         |     48.201 ns |   0.6385 ns |     0.5332 ns |     48.325 ns | 0.004 |    0.00 |    1 | 0.0029 |      48 B |       0.003 |
+<!-- table end -->
+
 ## Notes on Canonicality & Safety
 
 - **Canonical form required**: Parsing/accepting an ID re-encodes its decoded value and requires the result to match exactly. This rejects non-canonical forms such as leading-zero-like artifacts, wrong padding, IDs produced with different options, blocked IDs, or IDs that do not represent a single value.

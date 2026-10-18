@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Sqids.AspNetCore.Benchmarks/Sqids.AspNetCore.Benchmarks.csproj" />
   <Project Path="Sqids.AspNetCore.Demo/Sqids.AspNetCore.Demo.csproj" />
   <Project Path="Sqids.AspNetCore.Tests/Sqids.AspNetCore.Tests.csproj" />
   <Project Path="Sqids.AspNetCore/Sqids.AspNetCore.csproj" />
