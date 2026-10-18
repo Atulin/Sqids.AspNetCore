@@ -245,7 +245,7 @@ public sealed class SqidCodec
 		{
 			return;
 		}
-		
+
 		var filter = new ulong[(1 << FilterBits) / 64];
 		foreach (var word in leet.Concat(contains))
 		{
@@ -320,7 +320,7 @@ public sealed class SqidCodec
 		{
 			return true;
 		}
-		
+
 		bytesWritten = 0;
 		return false;
 
@@ -580,33 +580,34 @@ public sealed class SqidCodec
 			return _hasExact3 && _exact3.Contains(id);
 		}
 
-		if (_trigramFilter is null || !MayContainBlockedWord(id))
+		if (_trigramFilter is null || !MayContainBlockedWord(id, _trigramFilter))
 		{
 			return false;
 		}
 
-		if (_hasLeet)
+		if (!_hasLeet)
 		{
-			foreach (var length in _leetLengths)
-			{
-				if (length > id.Length)
-				{
-					break; // lengths are sorted
-				}
+			return _contains is not null && id.ContainsAny(_contains);
+		}
 
-				if (_leet.Contains(id[..length]) || _leet.Contains(id[^length..]))
-				{
-					return true;
-				}
+		foreach (var length in _leetLengths)
+		{
+			if (length > id.Length)
+			{
+				break; // lengths are sorted
+			}
+
+			if (_leet.Contains(id[..length]) || _leet.Contains(id[^length..]))
+			{
+				return true;
 			}
 		}
 
 		return _contains is not null && id.ContainsAny(_contains);
 	}
 
-	private bool MayContainBlockedWord(ReadOnlySpan<char> id)
+	private static bool MayContainBlockedWord(ReadOnlySpan<char> id, ulong[] filter)
 	{
-		var filter = _trigramFilter!;
 		for (var i = 0; i + 2 < id.Length; i++)
 		{
 			var bit = TrigramBit(id[i], id[i + 1], id[i + 2]);
