@@ -9,7 +9,7 @@
 		<RootNamespace>Sqids.AspNetCore</RootNamespace>
 
 		<PackageId>Atulin.Sqids.AspNetCore</PackageId>
-		<PackageVersion>1.0.0</PackageVersion>
+		<PackageVersion>1.1.0</PackageVersion>
 		<Title>Sqids.AspNetCore</Title>
 		<Description>SQID implementation made specifically for ASP.NET Core usage</Description>
 		<Authors>Atulin</Authors>
