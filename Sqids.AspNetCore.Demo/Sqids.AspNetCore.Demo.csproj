@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Sqid.AspNetCore.Demo</RootNamespace>
+    <RootNamespace>Sqids.AspNetCore.Demo</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

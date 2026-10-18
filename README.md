@@ -38,7 +38,7 @@ If you only need core encoding/decoding (not ASP.NET Core binding/JSON/OpenAPI),
 Add the package to your project:
 
 ```bash
-dotnet add package Sqids.AspNetCore
+dotnet add package Atulin.Sqids.AspNetCore
 ```
 
 ## Quick Start
@@ -86,14 +86,16 @@ Sqid.Parse("Lk".AsSpan());
 Sqid.TryParse("Lk"u8, out _);
 ```
 
-### Dependency Injection: `ISqidCodec`
+### Dependency Injection: `SqidCodec`
 
-For programmatic encoding/decoding with custom options or to control the codec instance, inject `ISqidCodec`:
+`AddSqids()` registers the process-wide codec as a singleton `SqidCodec`, so you can inject it for programmatic encoding/decoding:
 
 ```csharp
-app.MapGet("/encode/{n:long}", (long n, ISqidCodec codec) => codec.Encode(n));
-app.MapGet("/decode/{id}", (string id, ISqidCodec codec) =>
-    codec.TryDecode(id, out var v) ? Results.Ok(v) : Results.BadRequest("Invalid id"));
+app.MapGet("/encode/{n:long}", (long n, SqidCodec codec) => codec.Encode(n));
+app.MapGet("/decode/{id}", (string id, SqidCodec codec) =>
+    codec.TryDecode(id, out var v) == SqidParseError.None
+        ? Results.Ok(v)
+        : Results.BadRequest("Invalid id"));
 ```
 
 ### Minimal APIs
@@ -141,13 +143,13 @@ var restored = JsonSerializer.Deserialize<User>(json)!;
 
 ### OpenAPI
 
-Call `AddSqidSchema()` when configuring OpenAPI to add a reusable `Sqid` component schema with proper constraints (`type: string`, `format: sqid`, `pattern: ^[0-9A-Za-z]+$`, `minLength: 2`, `maxLength: 12`, description, and example). All `Sqid` and `Sqid?` properties in your models will reference the shared component.
+Call `AddSqidSchema()` when configuring OpenAPI to add a reusable `Sqid` component schema with proper constraints (`type: string`, `format: sqid`, `pattern: ^[0-9A-Za-z]+$`, `minLength: 2`, `maxLength: 12`, description, and example). All `Sqid` and `Sqid?` properties in your models will reference the shared component, and route/query/header parameters of type `Sqid` (Minimal APIs and MVC alike) are described with the same constraints inline.
 
 ```csharp
 builder.Services.AddOpenApi(o => o.AddSqidSchema());
 
-// Then document endpoints as normal
-app.MapGet("/openapi/v1.json", () => ...);
+// Then serve the document as normal
+app.MapOpenApi();
 ```
 
 ## Configuration

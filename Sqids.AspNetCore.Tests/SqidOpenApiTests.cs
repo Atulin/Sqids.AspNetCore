@@ -50,6 +50,72 @@ public sealed class SqidOpenApiTests
 			.IsEqualTo("#/components/schemas/Sqid");
 	}
 
+	[Test]
+	public async Task Schema_DescribesMinimalApiParameters()
+	{
+		var builder = WebApplication.CreateBuilder();
+		builder.WebHost.UseTestServer();
+		builder.Services.AddOpenApi(options => options.AddSqidSchema());
+		builder.Services.AddSqids();
+
+		await using var app = builder.Build();
+		app.MapOpenApi();
+		app.MapGet("/items/{id:sqid}", (Sqid id) => id.ToString());
+		app.MapGet("/items", (Sqid? id) => id?.ToString() ?? "all");
+		await app.StartAsync();
+
+		var client = app.GetTestClient();
+		var document = JsonNode.Parse(await client.GetStringAsync("/openapi/v1.json"))!;
+
+		var route = GetParameterSchema(document, "/items/{id}", "id");
+		await Assert.That(route["format"]!.GetValue<string>()).IsEqualTo("sqid");
+		await Assert.That(route["pattern"]!.GetValue<string>()).IsEqualTo("^[0-9A-Za-z]+$");
+		await Assert.That(route["minLength"]!.GetValue<int>()).IsEqualTo(2);
+		await Assert.That(route["maxLength"]!.GetValue<int>()).IsEqualTo(12);
+
+		var query = GetParameterSchema(document, "/items", "id");
+		await Assert.That(query["format"]!.GetValue<string>()).IsEqualTo("sqid");
+	}
+
+	[Test]
+	public async Task Schema_DescribesMvcParameters()
+	{
+		var builder = WebApplication.CreateBuilder();
+		builder.WebHost.UseTestServer();
+		builder.Services.AddOpenApi(options => options.AddSqidSchema());
+		builder.Services.AddControllers().AddApplicationPart(typeof(SqidTestController).Assembly);
+		builder.Services.AddSqids();
+
+		await using var app = builder.Build();
+		app.MapOpenApi();
+		app.MapControllers();
+		await app.StartAsync();
+
+		var client = app.GetTestClient();
+		var document = JsonNode.Parse(await client.GetStringAsync("/openapi/v1.json"))!;
+
+		var route = GetParameterSchema(document, "/bind/route/{id}", "id");
+		await Assert.That(route["format"]!.GetValue<string>()).IsEqualTo("sqid");
+		await Assert.That(route["pattern"]!.GetValue<string>()).IsEqualTo("^[0-9A-Za-z]+$");
+
+		var query = GetParameterSchema(document, "/bind/query", "id");
+		await Assert.That(query["format"]!.GetValue<string>()).IsEqualTo("sqid");
+
+		var optional = GetParameterSchema(document, "/bind/optional", "id");
+		await Assert.That(optional["format"]!.GetValue<string>()).IsEqualTo("sqid");
+
+		// Parameters that are not Sqids are left alone.
+		var plain = GetParameterSchema(document, "/bind/int/{id}", "id");
+		await Assert.That(plain["format"]?.GetValue<string>()).IsNotEqualTo("sqid");
+	}
+
+	private static JsonObject GetParameterSchema(JsonNode document, string path, string parameterName)
+	{
+		var parameters = document["paths"]![path]!["get"]!["parameters"]!.AsArray();
+		var parameter = parameters.Single(p => p!["name"]!.GetValue<string>() == parameterName)!;
+		return parameter["schema"]!.AsObject();
+	}
+
 	private static bool ContainsType(JsonObject schema, string type)
 	{
 		return schema["type"] switch

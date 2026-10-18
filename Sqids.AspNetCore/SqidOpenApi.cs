@@ -18,8 +18,7 @@ public static class SqidOpenApiExtensions
         {
             return options.AddSchemaTransformer(static (schema, context, _) =>
             {
-                var type = context.JsonTypeInfo.Type;
-                if ((Nullable.GetUnderlyingType(type) ?? type) != typeof(Sqid))
+                if (!DescribesSqid(context))
                 {
                     return Task.CompletedTask;
                 }
@@ -38,6 +37,31 @@ public static class SqidOpenApiExtensions
             });
         }
     }
+
+    // Properties, bodies and JSON-serialized values reach the transformer as a Sqid JsonTypeInfo.
+    // Route/query/header parameters do not: depending on whether the endpoint is a Minimal API or an
+    // MVC action, the declared type only survives in ParameterDescription.Type or
+    // ParameterDescription.ModelMetadata.ModelType (both surface as System.String), so all three are consulted.
+    private static bool DescribesSqid(OpenApiSchemaTransformerContext context)
+    {
+        if (IsSqid(context.JsonTypeInfo.Type))
+        {
+            return true;
+        }
+
+        var parameter = context.ParameterDescription;
+        return parameter is not null && (IsSqid(parameter.Type) || IsSqid(parameter.ModelMetadata?.ModelType));
+
+    }
+
+    /// <summary>
+    /// Determines whether the specified <see cref="Type"/> represents a <see cref="Sqid"/> or a nullable <see cref="Sqid"/>.
+    /// </summary>
+    /// <param name="type">The type to evaluate.</param>
+    /// <returns>
+    /// <c>true</c> if the specified type is a <see cref="Sqid"/> or a nullable <see cref="Sqid"/>; otherwise, <c>false</c>.
+    /// </returns>
+    private static bool IsSqid(Type? type) => type is not null && (Nullable.GetUnderlyingType(type) ?? type) == typeof(Sqid);
 
     // Builds an ECMA-262 character class body from the sorted alphabet, compressing runs like a-z and 0-9.
     // Only the sorted *set* is published, never the secret shuffled order.

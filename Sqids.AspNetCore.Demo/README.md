@@ -20,7 +20,7 @@ The demo configures `MinLength = 6`, so every ID is padded to at least six chara
 ## Running the demo
 
 ```bash
-dotnet run --project Sqid.AspNetCore.Demo
+dotnet run --project Sqids.AspNetCore.Demo
 ```
 
 Then open:
